@@ -52,12 +52,13 @@ namespace FunctionOptimizer
                 InputDataEntity.PopulationAmount = Convert.ToInt32(PopulationAmountTextBox.Text);
                 InputDataEntity.SelectionMethod = selectionMethodMapper.MapToSelectionMethodEnum(SelectionComboBox.SelectedIndex);
                 InputDataEntity.CrossMethod = crossMethodMapper.MapToCrossMethodEnum(CrossComboBox.SelectedIndex);
-                InputDataEntity.EliteStrategyAmount = Convert.ToInt32(EliteStrategyTextBox.Text)
+                InputDataEntity.EliteStrategyAmount = Convert.ToInt32(EliteStrategyTextBox.Text);
                 InputDataEntity.CrossProbability = Convert.ToInt32(CrossProbabilityTextBox.Text);
                 InputDataEntity.MutationProbability = Convert.ToInt32(MutationProbabilityTextBox.Text);
                 InputDataEntity.InversionProbability = Convert.ToInt32(InversionProbabilityTextBox.Text);
                 InputDataEntity.MutationMethod = mutationMethodMapper.MapToMutationMethodEnum(MutationComboBox.SelectedIndex);
                 InputDataEntity.EpochsAmount = Convert.ToInt32(EpochsAmountTextBox.Text);
+                InputDataEntity.TournamentAmount = Convert.ToInt32(TournamentAmountTextBox.Text);
                 if (InputDataEntity.SelectionMethod == SelectionMethod.Best)
                 {
                     InputDataEntity.BestSelectionPercentage = Convert.ToInt32(BestSelectionPercentageTextBox.Text);
@@ -94,8 +95,10 @@ namespace FunctionOptimizer
             var series = new LineSeries
             {
                 MarkerType = MarkerType.None
+                //Color = OxyColors.White
             };
             plotModel.Title = "Function value for each epoch";
+            //plotModel.Background = OxyColors.Black;
             var dataPoint = GetDataPointsFromOptimizationResult(optimizationResult);
             series.Points.AddRange(dataPoint);
             series.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;

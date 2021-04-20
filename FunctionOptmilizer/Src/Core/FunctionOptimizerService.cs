@@ -88,6 +88,10 @@ namespace FunctionOptimizer.Core
             {
                 case (SelectionMethod.Best):
                     return new BestSelection(inputDataEntity.BestSelectionPercentage);
+                case (SelectionMethod.Roulette):
+                    throw new NotImplementedException();
+                case (SelectionMethod.Tournament):
+                    return new TournamentSelection(inputDataEntity.TournamentAmount);
                 default:
                     throw new ArgumentException("Selection method was not foud.");
             }
@@ -99,6 +103,12 @@ namespace FunctionOptimizer.Core
             {
                 case (CrossMethod.OnePoint):
                     return new OnePointCross();
+                case (CrossMethod.TwoPoints):
+                    return new TwoPointCross();
+                case (CrossMethod.ThreePoints):
+                    return new ThreePointCross();
+                case (CrossMethod.Homogeneous):
+                    return new HomogeneousCross();
                 default:
                     throw new ArgumentException("Cross method was not foud.");
             }

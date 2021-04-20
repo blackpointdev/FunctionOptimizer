@@ -30,7 +30,7 @@
                 <StackPanel x:Name="ParametersPanel" Margin="0,0,0,15">
                     <TextBlock FontSize="16" Text="PARAMETERS" FontWeight="Bold" FontStretch="Normal" CharacterSpacing="130" FontFamily="Segoe UI" Margin="0,0,0,15"/>
                     <TextBox x:Name="BestSelectionPercentageTextBox" PlaceholderText="Best chromosomes percentage(best selection)" TextWrapping="Wrap" Margin="0,0,0,5"/>
-                    <TextBox PlaceholderText="Tournaments amount (tournament)" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                    <TextBox x:Name="TournamentAmountTextBox" PlaceholderText="Tournaments amount (tournament)" TextWrapping="Wrap" Margin="0,0,0,5"/>
                     <TextBox x:Name="EliteStrategyTextBox" PlaceholderText="Amount to keep (Elite)" TextWrapping="Wrap" Margin="0,0,0,5"/>
                     <TextBox x:Name="CrossProbabilityTextBox" PlaceholderText="Crossing probability" TextWrapping="Wrap" Margin="0,0,0,5"/>
                     <TextBox x:Name="MutationProbabilityTextBox" PlaceholderText="Mutation probability" TextWrapping="Wrap" Margin="0,0,0,5"/>

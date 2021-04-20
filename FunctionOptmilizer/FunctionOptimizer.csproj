@@ -127,11 +127,13 @@
     <Compile Include="Src\Operations\Crossing\CrossMethod.cs" />
     <Compile Include="Src\Operations\Crossing\ICross.cs" />
     <Compile Include="Src\Operations\Crossing\Mapper\CrossMethodMapper.cs" />
+    <Compile Include="Src\Operations\Crossing\Methods\HomogeneousCross.cs" />
     <Compile Include="Src\Operations\Crossing\Methods\OnePointCross.cs" />
     <Compile Include="Src\Model\InputDataEntity.cs" />
     <Compile Include="Src\Model\Range.cs" />
     <Compile Include="Src\Function\HolderTableFunction.cs" />
     <Compile Include="Src\Function\IFunction.cs" />
+    <Compile Include="Src\Operations\Crossing\Methods\ThreePointCross.cs" />
     <Compile Include="Src\Operations\Crossing\Methods\TwoPointCross.cs" />
     <Compile Include="Src\Operations\Inversion.cs" />
     <Compile Include="Src\Operations\Mutation\IMutation.cs" />
@@ -143,6 +145,7 @@
     <Compile Include="Src\Selection\ISelection.cs" />
     <Compile Include="Src\Selection\Mapper\SelectionMethodMapper.cs" />
     <Compile Include="Src\Selection\Methods\BestSelection.cs" />
+    <Compile Include="Src\Selection\Methods\TournamentSelection.cs" />
     <Compile Include="Src\Selection\SelectionMethod.cs" />
     <Compile Include="Src\UI\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

@@ -20,6 +20,9 @@ using FunctionOptimizer.Selection.Mapper;
 using FunctionOptimizer.Selection;
 using FunctionOptimizer.Operations.Mutation.Mapper;
 using FunctionOptimizer.Operations.Crossing.Mapper;
+using OxyPlot;
+using OxyPlot.Series;
+using OxyPlot.Axes;
 
 namespace FunctionOptimizer
 {
@@ -49,6 +52,7 @@ namespace FunctionOptimizer
                 InputDataEntity.PopulationAmount = Convert.ToInt32(PopulationAmountTextBox.Text);
                 InputDataEntity.SelectionMethod = selectionMethodMapper.MapToSelectionMethodEnum(SelectionComboBox.SelectedIndex);
                 InputDataEntity.CrossMethod = crossMethodMapper.MapToCrossMethodEnum(CrossComboBox.SelectedIndex);
+                InputDataEntity.EliteStrategyAmount = Convert.ToInt32(EliteStrategyTextBox.Text)
                 InputDataEntity.CrossProbability = Convert.ToInt32(CrossProbabilityTextBox.Text);
                 InputDataEntity.MutationProbability = Convert.ToInt32(MutationProbabilityTextBox.Text);
                 InputDataEntity.InversionProbability = Convert.ToInt32(InversionProbabilityTextBox.Text);
@@ -58,17 +62,54 @@ namespace FunctionOptimizer
                 {
                     InputDataEntity.BestSelectionPercentage = Convert.ToInt32(BestSelectionPercentageTextBox.Text);
                 }
-
+                
                 OptimizationResult optimizationResult = functionOptimizerService.Optimize(InputDataEntity);
-                MinimumTextBlock.Text += optimizationResult.ExtremeValue.ToString();
-                X1TextBlock.Text += optimizationResult.X1.ToString();
-                X2TextBlock.Text += optimizationResult.X2.ToString();
+
+                FunctionValuesPlotView.Model = GetEpochsFunctionValue(optimizationResult);
+                MinimumValueTextBlock.Text = optimizationResult.ExtremeValue.ToString();
+                X1ValueTextBlock.Text = optimizationResult.X1.ToString();
+                X2ValueTextBlock.Text = optimizationResult.X2.ToString();
             } 
             catch(FormatException)
             {
                 await ShowErrorMessage("Incorrect input", "Incorrect input value.");
             }
-            System.Diagnostics.Debug.WriteLine(InputDataEntity.ToString());
+        }
+
+        private PlotModel GetEpochsFunctionValue(OptimizationResult optimizationResult)
+        {
+            var plotModel = new PlotModel();
+            plotModel.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = 0,
+                Maximum = InputDataEntity.EpochsAmount
+            });
+            plotModel.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Minimum = -30,
+                Maximum = 0
+            });
+            var series = new LineSeries
+            {
+                MarkerType = MarkerType.None
+            };
+            plotModel.Title = "Function value for each epoch";
+            var dataPoint = GetDataPointsFromOptimizationResult(optimizationResult);
+            series.Points.AddRange(dataPoint);
+            series.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
+            plotModel.Series.Add(series);
+            return plotModel;
+        }
+
+        private List<DataPoint> GetDataPointsFromOptimizationResult(OptimizationResult optimizationResults)
+        {
+            var dataPoints = new List<DataPoint>();
+            var bestOfEachEpoch = optimizationResults.BestFromPreviousEpochs;
+            for (int i = 0; i < bestOfEachEpoch.Count; i++) 
+                dataPoints.Add(new DataPoint(i, bestOfEachEpoch[i].FunctionValue));
+            return dataPoints;
         }
 
         private IAsyncOperation<ContentDialogResult> ShowErrorMessage(string title, string message)
@@ -80,6 +121,27 @@ namespace FunctionOptimizer
                 CloseButtonText = "OK"
             };
             return contentDialog.ShowAsync();
+        }
+
+        private void MockButtonClick(object sender, RoutedEventArgs e)
+        {
+            StartRangeTextBox.Text = "-10";
+            EndRangeTextBox.Text = "10";
+
+            AccuracyTextBox.Text = "8";
+            EpochsAmountTextBox.Text = "1000";
+            PopulationAmountTextBox.Text = "1000";
+
+            BestSelectionPercentageTextBox.Text = "80";
+            //TODO here
+            CrossProbabilityTextBox.Text = "60";
+            MutationProbabilityTextBox.Text = "40";
+            InversionProbabilityTextBox.Text = "10";
+            EliteStrategyTextBox.Text = "1";
+
+            SelectionComboBox.SelectedIndex = 0;
+            MutationComboBox.SelectedIndex = 0;
+            CrossComboBox.SelectedIndex = 0;
         }
     }
 }

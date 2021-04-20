@@ -122,6 +122,7 @@
     <Compile Include="Src\Chromosome\BinaryChromosome.cs" />
     <Compile Include="Src\Chromosome\PopulationService.cs" />
     <Compile Include="Src\Core\FunctionOptimizerService.cs" />
+    <Compile Include="Src\Model\FunctionResult.cs" />
     <Compile Include="Src\Model\OptimizationResult.cs" />
     <Compile Include="Src\Operations\Crossing\CrossMethod.cs" />
     <Compile Include="Src\Operations\Crossing\ICross.cs" />
@@ -131,10 +132,13 @@
     <Compile Include="Src\Model\Range.cs" />
     <Compile Include="Src\Function\HolderTableFunction.cs" />
     <Compile Include="Src\Function\IFunction.cs" />
+    <Compile Include="Src\Operations\Crossing\Methods\TwoPointCross.cs" />
     <Compile Include="Src\Operations\Inversion.cs" />
     <Compile Include="Src\Operations\Mutation\IMutation.cs" />
     <Compile Include="Src\Operations\Mutation\Mapper\MutationMethodMapper.cs" />
     <Compile Include="Src\Operations\Mutation\Methods\EdgeMutation.cs" />
+    <Compile Include="Src\Operations\Mutation\Methods\OnePointMutation.cs" />
+    <Compile Include="Src\Operations\Mutation\Methods\TwoPointMutation.cs" />
     <Compile Include="Src\Operations\Mutation\MutationMethod.cs" />
     <Compile Include="Src\Selection\ISelection.cs" />
     <Compile Include="Src\Selection\Mapper\SelectionMethodMapper.cs" />
@@ -175,6 +179,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.11</Version>
+    </PackageReference>
+    <PackageReference Include="OxyPlot.Core">
+      <Version>2.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="OxyPlot.Windows">
+      <Version>2.0.0-unstable0952</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

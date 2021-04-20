@@ -11,7 +11,8 @@ namespace FunctionOptimizer.Function
     {
         public double Compute(double x1, double x2)
         {
-            return -Abs(Sin(x1) * Cos(x2) * Exp(Abs(1 - (Sqrt(x1 * x1 + x2 * x2) / PI))));
+            double expcomponent = Exp(Abs(1 - (Sqrt((x1 * x1) + (x2 * x2)) / PI)));
+            return -Abs(Sin(x1) * Cos(x2) * expcomponent);
         }
     }
 }

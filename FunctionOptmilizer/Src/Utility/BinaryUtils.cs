@@ -11,7 +11,7 @@ namespace FunctionOptimizer.Utility
     {
         public static double BinaryToDecimalRepresentation(String binaryRepresentation, Range range, double bitsInChromosome)
         {
-            return range.Start + Convert.ToInt32(binaryRepresentation, 2) * (range.End - range.Start) / (Math.Pow(2, bitsInChromosome) - 1);
+            return range.Start + Convert.ToInt64(binaryRepresentation, 2) * (range.End - range.Start) / (Math.Pow(2, bitsInChromosome) - 1);
         }
 
         public static string DecimalToBinaryRepresentation(int value, Range range, double bitsInChromosome)

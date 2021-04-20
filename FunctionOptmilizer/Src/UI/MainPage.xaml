@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    xmlns:oxy="using:OxyPlot.Windows">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,9 +31,9 @@
                     <TextBlock FontSize="16" Text="PARAMETERS" FontWeight="Bold" FontStretch="Normal" CharacterSpacing="130" FontFamily="Segoe UI" Margin="0,0,0,15"/>
                     <TextBox x:Name="BestSelectionPercentageTextBox" PlaceholderText="Best chromosomes percentage(best selection)" TextWrapping="Wrap" Margin="0,0,0,5"/>
                     <TextBox PlaceholderText="Tournaments amount (tournament)" TextWrapping="Wrap" Margin="0,0,0,5"/>
-                    <TextBox PlaceholderText="Percentage to keep (Elite)" TextWrapping="Wrap"/>
-                    <TextBox x:Name="CrossProbabilityTextBox" PlaceholderText="Crossing probability" TextWrapping="Wrap"/>
-                    <TextBox x:Name="MutationProbabilityTextBox" PlaceholderText="Mutation probability" TextWrapping="Wrap"/>
+                    <TextBox x:Name="EliteStrategyTextBox" PlaceholderText="Amount to keep (Elite)" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                    <TextBox x:Name="CrossProbabilityTextBox" PlaceholderText="Crossing probability" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                    <TextBox x:Name="MutationProbabilityTextBox" PlaceholderText="Mutation probability" TextWrapping="Wrap" Margin="0,0,0,5"/>
                     <TextBox x:Name="InversionProbabilityTextBox" PlaceholderText="Inversion probability" TextWrapping="Wrap"/>
                 </StackPanel>
                 <StackPanel x:Name="MethodsPanel" Margin="0,0,0,18">
@@ -42,7 +43,7 @@
                         <ComboBoxItem Content="Roulette"/>
                         <ComboBoxItem Content="Tournament"/>
                     </ComboBox>
-                    <ComboBox x:Name="CrossComboBox" HorizontalAlignment="Stretch" VerticalAlignment="Center" Width="257" Margin="0,0,0,0" PlaceholderText="Cross">
+                    <ComboBox x:Name="CrossComboBox" HorizontalAlignment="Stretch" VerticalAlignment="Center" Width="257" Margin="0,0,0,5" PlaceholderText="Cross">
                         <ComboBoxItem Content="One point"/>
                         <ComboBoxItem Content="Two points"/>
                         <ComboBoxItem Content="Three points"/>
@@ -55,20 +56,36 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel x:Name="CalculatePanel" Height="100" Width="260">
-                    <Button Click="OptimizeButtonClick" Content="OPTIMIZE" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" CharacterSpacing="200"/>
+                    <Button x:Name="OptimizeButton" Click="OptimizeButtonClick" Content="OPTIMIZE" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" CharacterSpacing="200" Margin="0,0,0,5"/>
+                    <Button x:Name="Mock" Click="MockButtonClick"  Content="MOCK" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" CharacterSpacing="200"/>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
         <Grid x:Name="ResultsGrid" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="200"/>
+                <RowDefinition Height="150"/>
             </Grid.RowDefinitions>
-            <Image VerticalAlignment="Stretch" Grid.Row="0" Source="Assets\WelcomeMessage.png"/>
-            <StackPanel x:Name="ResultsStackPanel" Grid.Row="1">
-                <TextBlock x:Name="MinimumTextBlock" Text="Minimum at: "/>
-                <TextBlock x:Name="X1TextBlock" Text="X1: "/>
-                <TextBlock x:Name="X2TextBlock" Text="X2: "/>
+            <Grid x:Name="PlotsGrid" Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <oxy:PlotView x:Name="FunctionValuesPlotView" Grid.Row="0" Grid.Column="0" Padding="5,5,5,5"/>
+                <oxy:PlotView x:Name="MeanPlotView" Grid.Row="0" Grid.Column="1" Padding="5,5,5,5"/>
+                <oxy:PlotView x:Name="StandardDeviationPlotView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="5,5,5,5"/>
+            </Grid>
+            <StackPanel x:Name="ResultsStackPanel" Grid.Row="1" Padding="5,5,5,5" Orientation="Horizontal">
+                <TextBlock x:Name="MinimumTextBlock" Text="MINIMUM" VerticalAlignment="Center" FontSize="15" CharacterSpacing="200" Margin="10,0,30,0"/>
+                <TextBlock x:Name="MinimumValueTextBlock" FontSize="25" VerticalAlignment="Center" Text="0.0" FontWeight="Bold"/>
+                <TextBlock x:Name="X1TextBlock" FontSize="15" VerticalAlignment="Center" Text="X1: "  CharacterSpacing="200" Margin="30,0,30,0"/>
+                <TextBlock x:Name="X1ValueTextBlock" FontSize="25" VerticalAlignment="Center" Text="0.0" FontWeight="Bold"/>
+                <TextBlock x:Name="X2TextBlock" FontSize="15" VerticalAlignment="Center" Text="X2: " CharacterSpacing="200" Margin="30,0,30,0"/>
+                <TextBlock x:Name="X2ValueTextBlock" FontSize="25" VerticalAlignment="Center" Text="0.0" FontWeight="Bold"/>
             </StackPanel>
         </Grid>
     </Grid>

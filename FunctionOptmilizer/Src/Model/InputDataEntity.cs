@@ -22,6 +22,7 @@ namespace FunctionOptimizer.Model
         public int MutationProbability { get; set; }
         public int InversionProbability { get; set; }
         public int EliteStrategyAmount { get; set; }
+        public bool Maximize { get; set; }
         public SelectionMethod SelectionMethod { get; set; }
         public CrossMethod CrossMethod { get; set; }
         public MutationMethod MutationMethod { get; set; }
@@ -38,12 +39,13 @@ namespace FunctionOptimizer.Model
                                 CrossProbability: {7}, 
                                 MutationProbability: {8}, 
                                 InversionProbability: {9},
-                                EliteStrategyAmount: {10}
-                                SelectionMethod: {11},
-                                CrossMethod: {12},
-                                MutationMethod: {13}",
+                                EliteStrategyAmount: {10},
+                                Maximize: {11}
+                                SelectionMethod: {12},
+                                CrossMethod: {13},
+                                MutationMethod: {14}",
                                 DataRange, PopulationAmount, Accuracy, EpochsAmount, BestSelectionPercentage, TournamentAmount, PercentageToKeep,
-                                CrossProbability, MutationProbability, InversionProbability, EliteStrategyAmount, SelectionMethod, CrossMethod, MutationMethod);
+                                CrossProbability, MutationProbability, InversionProbability, EliteStrategyAmount, Maximize, SelectionMethod, CrossMethod, MutationMethod);
         }
     }
 }

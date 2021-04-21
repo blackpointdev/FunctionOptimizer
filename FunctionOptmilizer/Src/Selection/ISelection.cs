@@ -10,6 +10,6 @@ namespace FunctionOptimizer.Selection
 {
     interface ISelection
     {
-        List<BinaryChromosome> ApplySelection(List<BinaryChromosome> chromosomes, Range range, double numberOfBitsInChromosom);
+        List<BinaryChromosome> ApplySelection(List<BinaryChromosome> population, Range range, double numberOfBitsInChromosome);
     }
 }

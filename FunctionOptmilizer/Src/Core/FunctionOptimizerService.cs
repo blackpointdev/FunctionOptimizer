@@ -14,6 +14,7 @@ using FunctionOptimizer.Operations.Mutation;
 using FunctionOptimizer.Operations.Mutation.Methods;
 using FunctionOptimizer.Operations;
 using FunctionOptimizer.Utility;
+using System.Diagnostics;
 
 namespace FunctionOptimizer.Core
 {
@@ -29,7 +30,7 @@ namespace FunctionOptimizer.Core
         public FunctionOptimizerService()
         {
             PopulationService = new PopulationService();
-            Function = new HolderTableFunction();
+            Function = new BoothFunction();
             Inversion = new Inversion();
         }
 
@@ -43,18 +44,32 @@ namespace FunctionOptimizer.Core
             ICross crossMethod = GetCrossMethod(InputDataEntity.CrossMethod);
             IMutation mutationMethod = GetMutationMethod(InputDataEntity.MutationMethod);
             var bestOfEachEpoch = new List<FunctionResult>();
-            List<BinaryChromosome> tmpBest = new List<BinaryChromosome>(2);
+            List<BinaryChromosome> tmpBest = new List<BinaryChromosome>();
+            List<double> means = new List<double>();
+            List<double> standardDeviation = new List<double>();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             for (int i = 0; i < InputDataEntity.EpochsAmount; i++)
             {
                 List<BinaryChromosome> newPopulation = selectionMethod.ApplySelection(BinaryChromosomes, inputDataEntity.DataRange, NumberOfBitsInChromosome);
-                if (i != 0 && GetFunctionResultForChromosomes(newPopulation[0], newPopulation[1], inputDataEntity.DataRange).FunctionValue > 
-                    GetFunctionResultForChromosomes(tmpBest[0], tmpBest[1], inputDataEntity.DataRange).FunctionValue)
+                if (i != 0)
                 {
-                    newPopulation.InsertRange(0, tmpBest);
+                    double newValue = GetFunctionResultForChromosomes(newPopulation[0], newPopulation[1], inputDataEntity.DataRange).FunctionValue;
+                    double oldValue = GetFunctionResultForChromosomes(tmpBest[0], tmpBest[1], inputDataEntity.DataRange).FunctionValue;
+                    if ((inputDataEntity.Maximize == false && newValue > oldValue) || (inputDataEntity.Maximize == true && newValue < oldValue))
+                    {
+                        newPopulation.InsertRange(0, tmpBest);
+                    }
+                    else
+                    {
+                        newPopulation.InsertRange(newPopulation.Count - 1, tmpBest);
+                    }
                 }
                 bestOfEachEpoch.Add(GetFunctionResultForChromosomes(newPopulation[0], newPopulation[1], inputDataEntity.DataRange));
-                tmpBest.Add(newPopulation[0]);
-                tmpBest.Add(newPopulation[1]);
+                tmpBest.Clear();
+                for (int j = 0; j < inputDataEntity.EliteStrategyAmount * 2; j++) tmpBest.Add(newPopulation[j]);
+                means.Add(CalculateMean(newPopulation, inputDataEntity.DataRange));
+                standardDeviation.Add(CalculateDeviation(newPopulation, inputDataEntity.DataRange, means[i]));
                 List<BinaryChromosome> crossedPopulation = crossMethod.Cross(newPopulation, InputDataEntity.CrossProbability);
                 List<BinaryChromosome> mutatedPopulation = mutationMethod.Mutate(crossedPopulation, InputDataEntity.MutationProbability);
                 List<BinaryChromosome> populationAfterInversion = Inversion.PerformInversion(mutatedPopulation, InputDataEntity.InversionProbability);
@@ -65,14 +80,38 @@ namespace FunctionOptimizer.Core
             var bestIndividuals = selectionMethod.ApplySelection(BinaryChromosomes, inputDataEntity.DataRange, NumberOfBitsInChromosome).Take(2).ToArray();
             double x1 = BinaryUtils.BinaryToDecimalRepresentation(bestIndividuals[0].BinaryRepresentation, inputDataEntity.DataRange, NumberOfBitsInChromosome);
             double x2 = BinaryUtils.BinaryToDecimalRepresentation(bestIndividuals[1].BinaryRepresentation, inputDataEntity.DataRange, NumberOfBitsInChromosome);
-            double minimum = Function.Compute(x1, x2);
+            double extremum = Function.Compute(x1, x2);
+            stopwatch.Stop();
             return new OptimizationResult
             {
-                ExtremeValue = minimum,
+                ExtremeValue = extremum,
                 X1 = x1,
                 X2 = x2,
-                BestFromPreviousEpochs = bestOfEachEpoch
+                BestFromPreviousEpochs = bestOfEachEpoch,
+                MeanFromPreviousEpochs = means,
+                StandardDeviation = standardDeviation,
+                TimeElapsed = stopwatch.ElapsedMilliseconds
             };
+        }
+
+        private double CalculateMean(List<BinaryChromosome> binaryChromosomes, Range range)
+        {
+            double sum = 0;
+            for (int i = 0; i < binaryChromosomes.Count; i += 2)
+            {
+                sum += GetFunctionResultForChromosomes(binaryChromosomes[i], binaryChromosomes[i + 1], range).FunctionValue;
+            }
+            return sum / (binaryChromosomes.Count / 2);
+        }
+
+        private double CalculateDeviation(List<BinaryChromosome> binaryChromosomes, Range range, double mean)
+        {
+            double sumFactor = 0;
+            for (int i = 0; i < binaryChromosomes.Count; i += 2)
+            {
+                sumFactor += Math.Pow(GetFunctionResultForChromosomes(binaryChromosomes[i], binaryChromosomes[i + 1], range).FunctionValue - mean, 2);
+            }
+            return Math.Sqrt(sumFactor / binaryChromosomes.Count / 2);
         }
 
         private FunctionResult GetFunctionResultForChromosomes(BinaryChromosome chromosome1, BinaryChromosome chromosome2, Range range)
@@ -87,11 +126,11 @@ namespace FunctionOptimizer.Core
             switch (selectionMethod)
             {
                 case (SelectionMethod.Best):
-                    return new BestSelection(inputDataEntity.BestSelectionPercentage);
+                    return new BestSelection(inputDataEntity.BestSelectionPercentage, inputDataEntity.Maximize);
                 case (SelectionMethod.Roulette):
-                    throw new NotImplementedException();
+                    return new RouletteSelection(inputDataEntity.BestSelectionPercentage, inputDataEntity.Maximize);
                 case (SelectionMethod.Tournament):
-                    return new TournamentSelection(inputDataEntity.TournamentAmount);
+                    return new TournamentSelection(inputDataEntity.TournamentAmount, inputDataEntity.Maximize);
                 default:
                     throw new ArgumentException("Selection method was not foud.");
             }

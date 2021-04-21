@@ -122,8 +122,10 @@
     <Compile Include="Src\Chromosome\BinaryChromosome.cs" />
     <Compile Include="Src\Chromosome\PopulationService.cs" />
     <Compile Include="Src\Core\FunctionOptimizerService.cs" />
+    <Compile Include="Src\Function\BoothFunction.cs" />
     <Compile Include="Src\Model\FunctionResult.cs" />
     <Compile Include="Src\Model\OptimizationResult.cs" />
+    <Compile Include="Src\Model\RouletteItem.cs" />
     <Compile Include="Src\Operations\Crossing\CrossMethod.cs" />
     <Compile Include="Src\Operations\Crossing\ICross.cs" />
     <Compile Include="Src\Operations\Crossing\Mapper\CrossMethodMapper.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Src\Selection\ISelection.cs" />
     <Compile Include="Src\Selection\Mapper\SelectionMethodMapper.cs" />
     <Compile Include="Src\Selection\Methods\BestSelection.cs" />
+    <Compile Include="Src\Selection\Methods\RouletteSelection.cs" />
     <Compile Include="Src\Selection\Methods\TournamentSelection.cs" />
     <Compile Include="Src\Selection\SelectionMethod.cs" />
     <Compile Include="Src\UI\MainPage.xaml.cs">
@@ -152,6 +155,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Src\Utility\BinaryUtils.cs" />
+    <Compile Include="Src\Utility\FileUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -180,6 +184,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CsvHelper">
+      <Version>26.1.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.11</Version>
     </PackageReference>

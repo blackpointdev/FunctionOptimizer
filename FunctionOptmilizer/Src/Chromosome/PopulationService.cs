@@ -16,7 +16,7 @@ namespace FunctionOptimizer.Chromosome
 
         public PopulationService()
         {
-            Function = new HolderTableFunction();
+            Function = new BoothFunction();
         }
 
         public List<BinaryChromosome> GeneratePopulation(int amount, double numberOfBits)

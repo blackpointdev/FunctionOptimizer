@@ -55,13 +55,15 @@
                         <ComboBoxItem Content="Two points"/>
                     </ComboBox>
                 </StackPanel>
-                <StackPanel x:Name="CalculatePanel" Height="100" Width="260">
+                <StackPanel x:Name="CalculatePanel" Height="150" Width="260">
+                    <CheckBox x:Name="MaximizeCheckBox" Content="Maximize" Margin="0,0,0,5"/>
+                    <CheckBox x:Name="SaveToFileCheckBox" Content="Save to file" IsChecked="True" Margin="0,0,0,5"/>
                     <Button x:Name="OptimizeButton" Click="OptimizeButtonClick" Content="OPTIMIZE" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" CharacterSpacing="200" Margin="0,0,0,5"/>
                     <Button x:Name="Mock" Click="MockButtonClick"  Content="MOCK" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontWeight="Bold" CharacterSpacing="200"/>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
-        <Grid x:Name="ResultsGrid" Grid.Column="1">
+        <Grid x:Name="ResultsGrid" Grid.Column="1" Padding="5,5,5,5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="150"/>
@@ -86,6 +88,10 @@
                 <TextBlock x:Name="X1ValueTextBlock" FontSize="25" VerticalAlignment="Center" Text="0.0" FontWeight="Bold"/>
                 <TextBlock x:Name="X2TextBlock" FontSize="15" VerticalAlignment="Center" Text="X2: " CharacterSpacing="200" Margin="30,0,30,0"/>
                 <TextBlock x:Name="X2ValueTextBlock" FontSize="25" VerticalAlignment="Center" Text="0.0" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel x:Name="TimeStackPanel" Grid.Row="1" Orientation="Horizontal" Padding="5,5,5,5">
+                <TextBlock Text="Time elapsed: " CharacterSpacing="80"/>
+                <TextBlock x:Name="TimeElapsedTextBlock" Text="0.0s" Margin="10,0,0,0" />
             </StackPanel>
         </Grid>
     </Grid>

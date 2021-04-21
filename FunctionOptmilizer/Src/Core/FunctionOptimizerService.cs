@@ -3,8 +3,6 @@ using FunctionOptimizer.Chromosome;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FunctionOptimizer.Selection;
 using FunctionOptimizer.Selection.Methods;
 using FunctionOptimizer.Function;
